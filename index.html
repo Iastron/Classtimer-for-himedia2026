@@ -333,6 +333,10 @@
   .notice .bd {
     margin-top: 11px; font-size: 14.5px; line-height: 1.8;
     color: var(--text); word-break: break-word;
+    /* pre-wrap: 연속 공백과 줄바꿈을 입력한 그대로 살립니다.
+       (HTML 기본값 normal 은 공백 여러 개를 하나로 합쳐버립니다) */
+    white-space: pre-wrap;
+    tab-size: 2;
     /* 기본은 4줄까지만. -webkit-box 는 줄 수로 자르기 위한 유일한 방법이라
        접두사가 붙어도 모든 최신 브라우저가 지원합니다. */
     display: -webkit-box;
@@ -1281,11 +1285,12 @@ const num = n => (n ?? 0).toLocaleString('ko-KR');
 const ESC = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
 const esc = t => String(t).replace(/[&<>"']/g, c => ESC[c]);
 
+// 줄바꿈은 CSS 의 white-space: pre-wrap 이 처리하므로
+// 여기서는 이스케이프와 링크 변환만 합니다.
 function rich(text) {
   return esc(text)
     .replace(/(https?:\/\/[^\s<]+)/g,
-             '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
-    .replace(/\n/g, '<br>');
+             '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>');
 }
 
 function when(ts) {
